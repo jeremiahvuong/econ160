@@ -1,10 +1,6 @@
 % Custom generic preamble; supports texlive 2022
 \ProvidesPackage{preamble}
 
-% ----- Package options -----
-
-% initialize options
-
 \newif\ifopt@tikz\opt@tikztrue  % default true
 \newif\ifopt@pgfexternal\opt@pgfexternalfalse
 \newif\ifopt@circuits\opt@circuitsfalse
@@ -36,7 +32,9 @@
 
 \gdef\auxdir{out}
 
-% declare options
+%================================
+% Options
+%================================
 
 \DeclareOption{tikz}{%
     \opt@tikztrue%
@@ -74,7 +72,9 @@
 
 \DeclareOption{times}{\opt@timestrue}
 
-% option groups
+%================================
+% Option Groups
+%================================
 
 \DeclareOption{homework}{%
     \optgroup@homeworktrue%
@@ -120,7 +120,9 @@
 \ExecuteOptions{}
 \ProcessOptions*
 
-% ----- Packages -----
+%================================
+% Packages
+%================================
 
 \RequirePackage{mathdots}  % more dots in math mode; before amsmath because of warnings
 
@@ -1106,10 +1108,6 @@
     \setlist[enumerate, 2]{label=(\roman*)}
 \fi
 
-%================================
-% Spacing
-%================================
-
 % displaymath spacing
 \setlength{\abovedisplayskip}{5pt}
 \setlength{\abovedisplayshortskip}{4pt}
@@ -1157,3 +1155,9 @@
 % Custom
 %================================
 
+% Quick nested itemize
+\newcommand{\qitem}[1]{
+    \begin{itemize}[label=$\bullet$]
+        \item #1
+    \end{itemize}
+}

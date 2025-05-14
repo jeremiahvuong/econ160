@@ -7,14 +7,151 @@
 \date{2025-05-12}
 
 \begin{document}
+
+% \pagestyle{fancy}
+% \fancyhead[L]{Game Theory}
+% \fancyhead[R]{\thepage}
+
 \maketitle
+
 \tableofcontents
+\newpage
 
-\lecture[2024-03-20]{Introduction to Game Theory}
+\lecture[]{Introduction to Game Theory}
+Game Theory is a way of thinking about strategic interactions between self-interested people.
+\begin{definition}[TCP Protocol (rough example)]
+  You don't actually have a direct connection to the other person.
+  Instead, there is a whole sequence of computers that pass your message along until it reaches the other person.
+  After the message is sent, the other person will send an acknowledgement back to you (likewise through the same sequence of computers).
 
-\begin{theorem}[Nash Equilibrium]{nash}
-In any finite game, there exists at least one Nash equilibrium.
-\end{theorem}
+  There could be a situation where along the chain of computers, the message gets lost.
+  Such that your computer handles this by waiting a certain amount of time and if it doesn't receive an acknowledgement,
+  it assumes the message was never recieved.
+
+  In such case, your computer slows down the rate at which it sends messages on the assumption that
+  there is a congestion on the network.
+\end{definition}
+
+\begin{example}[TCP Protocol Game]
+  Should you send your packets using the correctly implemented TCP protocol or should you send them without the protocol?
+
+  This is what we call a two-player game:
+  \begin{itemize}
+    \item \textbf{both use protocol}: both get 1ms delay
+    \item \textbf{one uses protocol, the other doesn't}: 4ms for correct, 0ms for defecting
+    \item \textbf{both defect}: both get 3 ms delay
+  \end{itemize}
+\end{example}
+
+Of course, assuming all players are rational, they would want to minimize their delay.
+Such that risking the scenario where one player uses the protocol and the other doesn't is not optimal.
+
+In a case where you could see what the other player is doing, you could use a strategy like tit-for-tat.
+
+\subsection{Self-interested Agents and Utility Theory}
+\begin{definition}[Self-interested Agents and Utility Theory]
+  The agent has its own description of states of the world that it likes,
+  and acts based on that description.
+
+  Utility function:
+  \begin{itemize}
+    \item quantifies degree of preference across alternatives
+    \item explains the impact of uncertainty
+    \item \textbf{Decision-theoretic}: act to maximize expecetex utility
+  \end{itemize}
+\end{definition}
+Ultimately, we can say that agents are perfectly rational if they act to maximize their utility.
+And that the utility function is a way (dimensionally?) of representing their preferences.
+
+\subsection{Defining Games}
+\begin{definition}[Game]
+  A game is a collection of players, actions, and payoffs. Where the key ingredients:
+
+  \begin{itemize}
+    \item Players: who are the decision-makers?
+    \qitem{People, firms, companies, etc.}
+    \item Actions: what can each player do?
+    \qitem{Enter a bid, decide when to end an event, decide when to sell stock, etc.}
+    \item Payoffs: what motivates players?
+    \qitem{Profit, other players' actions, etc.}
+  \end{itemize}
+\end{definition}
+
+Note that a "game" is simply a singular scenario, instead of a collection of scenarios.
+There are two standard representations of games:
+
+\begin{definition}[Normal Form (aka Matrix form, Strategic Form)]
+  List what players get as a function of their actions. 
+  It is as if players choose their actions simultaneously.
+
+  For a finite, $n$-person game: $\langle N, A, u \rangle$
+  \begin{itemize}
+    \item \textbf{Players:} $N = \{1, \ldots, n\}$ is a finite set of $n$ players, indexed by $i$
+    \item \textbf{Action set:} for a player $i$,
+    $$a = (a_i, \ldots, a_n) \in A = A_i \times \ldots \times A_n$$
+    Where $A$ is actions chosen by all players (action profile),
+    $A_i$ is the set of actions available to player $i$,
+    $a$ is an ordered tuple of what each player is doing,
+    and $a_i$ is a representative action for player $i$.
+    \item \textbf{Utility function (payoff):} for player $i$: $u_i: A \to \mathbb{R}$
+    \qitem{$u = (u_1, \ldots, u_n)$ is a profile of utility functions.}
+  \end{itemize}
+\end{definition}
+
+
+\begin{example}[TCP Backoff Game in Matrix Form (Normal)]
+  Two players are representitive as either a row or column player.
+  The first number is for the row player.
+  Where delay (utility) is measured in milliseconds and negative.
+  \begin{center}
+    \begin{tabular}{|c|c|c|}
+      \hline
+      & \textbf{Use} & \textbf{Don't} \\
+      \hline
+      \textbf{Use} & (-1, -1) & (-4, 0) \\  
+      \textbf{Don't} & (0, -4) & (-3, -3) \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{example}
+
+\newpage
+
+\begin{example}[Large Collective Game]
+  Let's assume we have a game where there are too many players
+  to matrix out all the utilities.
+  The players can choose to either revolt or not against their leader.
+  \begin{itemize}
+    \item \textbf{Players:} $N = \{ 1, \ldots, 10,000,000\}$
+    \item \textbf{Actions:} $A_i = \{ \text{Revolt}, \text{Not Revolt}\}$
+    \item \textbf{Utility} for player $i$:
+    \begin{itemize}[label=$\bullet$]
+      \item $u_i(a) = 1$ if $\#\{ j : a_j = \text{Revolt}\} \geq 2,000,000$
+      \item $u_i(a) = -1$ if $\#\{ j : a_j = \text{Revolt}\} < 2,000,000$ and $a_i = \text{Revolt}$
+      \item $u_i(a) = 0$ if $\#\{ j : a_j = \text{Revolt}\} < 2,000,000$ and $a_i = \text{Not Revolt}$
+    \end{itemize}
+    Where 1 is a successful revolt, -1 is a failed revolt (punishment), and 0 is not revolting.
+  \end{itemize}
+\end{example}
+In games where the outcome is ultimately decided by the players,
+in cases where we can orginize, it is beneficial to do so.
+In the Large Collective Game, the revolt is successful if at least 2,000,000 players revolt,
+even if you yourself do not revolt.
+In the case that not enough players revolt, it is on you to decide your payoff.
+If you were a player that didn't care about the outcome (revolt), you would not revolt, as too keep yourself from punishment.
+
+\begin{definition}[Extensive Form]
+  Includes the timing of moves.
+  \begin{itemize}
+    \item Players move sequentially, represented as a tree.
+    \qitem{Chess is a good example of this, where white and black move alternately.}
+    \item Keeps track of what each player knows at each point in the game.
+    \qitem{Poker: sees bet not necessarily what cards they have.}
+  \end{itemize}
+\end{definition}
+
+
+
 
 \end{document}
 

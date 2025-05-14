@@ -1,2 +1,4 @@
-\contentsline {lecturesection}{\numberline {1}Introduction to Game Theory}{1}{lecturesection.1}%
+\contentsline {lecturesection}{\numberline {1}Introduction to Game Theory}{2}{lecturesection.1}%
+\contentsline {subsection}{\numberline {1.1}Self-interested Agents and Utility Theory}{2}{subsection.4}%
+\contentsline {subsection}{\numberline {1.2}Defining Games}{3}{subsection.6}%
 \contentsfinish 
